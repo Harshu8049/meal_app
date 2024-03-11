@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/models/meal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MealDetailsScreen extends StatefulWidget {
   const MealDetailsScreen(
@@ -13,13 +14,28 @@ class MealDetailsScreen extends StatefulWidget {
 }
 
 class _MealDetailsScreen extends State<MealDetailsScreen> {
+  late SharedPreferences prefs;
+
   var x = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      x = prefs.getInt('x') ?? 1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Widget? star;
     if (x == 1) {
-      star = const Icon(Icons.star_border_outlined);
+      star = const Icon(Icons.star_border);
     } else if (x == 0) {
       star = const Icon(Icons.star);
     }
@@ -30,13 +46,9 @@ class _MealDetailsScreen extends State<MealDetailsScreen> {
           IconButton(
             onPressed: () {
               setState(() {
-                if (x == 0) {
-                  x = 1;
-                } else if (x == 1) {
-                  x = 0;
-                }
+                x = (x == 0) ? 0 : 1;
+                prefs.setInt('x', x);
               });
-
               widget.onToogleFavorite(widget.meal);
             },
             icon: Padding(

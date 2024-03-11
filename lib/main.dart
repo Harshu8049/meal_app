@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meal_app/screen/tabs.dart';
 
 final theme = ThemeData(
@@ -12,7 +13,8 @@ final theme = ThemeData(
   textTheme: GoogleFonts.latoTextTheme(),
 );
 void main() {
-  runApp(const App());
+  runApp(const  ProviderScope(
+   child: App(),));
 }
 
 class App extends StatelessWidget {
