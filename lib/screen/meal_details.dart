@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/models/meal.dart';
+import 'package:meal_app/screen/tabs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class MealDetailsScreen extends StatefulWidget {
-  const MealDetailsScreen(
-      {super.key, required this.meal, required this.onToogleFavorite});
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meal_app/provider/favorites_provider.dart';
+class MealDetailsScreen extends ConsumerStatefulWidget {
+  const MealDetailsScreen({super.key, required this.meal});
   final Meal meal;
-  final void Function(Meal meal) onToogleFavorite;
+
   @override
-  State<StatefulWidget> createState() {
+  ConsumerState<MealDetailsScreen> createState() {
     return _MealDetailsScreen();
   }
 }
 
-class _MealDetailsScreen extends State<MealDetailsScreen> {
+class _MealDetailsScreen extends ConsumerState<MealDetailsScreen> {
   late SharedPreferences prefs;
 
   var x = 1;
@@ -45,11 +46,7 @@ class _MealDetailsScreen extends State<MealDetailsScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                x = (x == 0) ? 0 : 1;
-                prefs.setInt('x', x);
-              });
-              widget.onToogleFavorite(widget.meal);
+              ref.read(favoriteMealsProvider.notifier);
             },
             icon: Padding(
               padding: const EdgeInsets.all(16.0),
