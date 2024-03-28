@@ -46,7 +46,7 @@ class _MealDetailsScreen extends ConsumerState<MealDetailsScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              ref.read(favoriteMealsProvider.notifier);
+              ref.read(favoriteMealsProvider.notifier).toggleMealFavoritesStatus(meal);
             },
             icon: Padding(
               padding: const EdgeInsets.all(16.0),
