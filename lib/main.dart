@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
 
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meal_app/screen/tabs.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:hive_flutter/adapters.dart';
+import 'package:meal_app/screen/register_page.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -12,22 +15,36 @@ final theme = ThemeData(
   ),
   textTheme: GoogleFonts.latoTextTheme(),
 );
-void main() {
-  runApp(
-    const ProviderScope(
-      child: App(),
-    ),
-  ); //provider scope is important to use provider
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('myBox');
+  await Hive.openBox('myBox1');
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      home: const TabsScreen(),
-      //,
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FirstPage(),
     );
+  }
+}
+
+class FirstPage extends StatelessWidget {
+  const FirstPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme,
+        home: RegisterScreen());
   }
 }

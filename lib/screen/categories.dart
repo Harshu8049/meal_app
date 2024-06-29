@@ -23,11 +23,9 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       lowerBound: 0,
       upperBound: 1,
-      animationBehavior: AnimationBehavior.preserve,
-      reverseDuration: const Duration(seconds: 2),
     );
     _animationController.forward();
   }
@@ -41,7 +39,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   void _selectCategory(BuildContext context, Category category) {
     final filteredMeals = widget.availableMeals
         .where((meal) => meal.categories.contains(category.id))
-        .toList(); //check true oir false
+        .toList();
 
     Navigator.of(context).push(MaterialPageRoute(
         builder: (ctx) => MealScreen(
@@ -52,31 +50,40 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
+    return Scaffold(
+      body: AnimatedBuilder(
         animation: _animationController,
         child: GridView(
-            padding: const EdgeInsets.all(16.0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 3 / 2, // sizing of the grid view item
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-            ), // 2 column //grid delgate use to control the layout of the grid
-            children: [
-              //availableCategory.map((category)) => categorygriditem(category : category) alternative of for
-              for (final i in availableCategories)
-                CategoryGridItem(
-                  category: i,
-                  onSelectCategory: () {
-                    _selectCategory(context, i);
-                  },
-                ),
-            ]),
+          padding: const EdgeInsets.all(16.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+          ),
+          children: [
+            for (final category in availableCategories)
+              CategoryGridItem(
+                category: category,
+                onSelectCategory: () {
+                  _selectCategory(context, category);
+                },
+              ),
+          ],
+        ),
         builder: (context, child) => SlideTransition(
-              position: Tween(begin: const Offset(0.3, 0.5), end: Offset(0, 0))
-                  .animate(CurvedAnimation(
-                      parent: _animationController, curve: Curves.bounceInOut)),
-              child: child,
-            ));
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.3),
+            end: Offset.zero,
+          ).animate(
+            CurvedAnimation(
+              parent: _animationController,
+              curve: Curves.easeInOut,
+            ),
+          ),
+          child: child,
+        ),
+      ),
+    );
   }
 }

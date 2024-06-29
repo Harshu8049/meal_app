@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meal_app/models/meal.dart';
 import 'package:meal_app/screen/meal_details.dart';
 import 'package:meal_app/widgets/meal_item.dart';
 
-class MealScreen extends StatelessWidget {
-  const MealScreen(
-      {super.key,
-      this.title,
-      required this.meals,
-      });
+class MealScreen extends ConsumerWidget {
+  const MealScreen({
+    super.key,
+    this.title,
+    required this.meals,
+  });
 
   final String? title;
   final List<Meal> meals;
 
-
-  void selectMeal(BuildContext context, meal) {
+  void selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => MealDetailsScreen(
-          meal: meal,
           
+          meal: meal,
         ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Widget content = Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -42,7 +42,7 @@ class MealScreen extends StatelessWidget {
             height: 16,
           ),
           Text(
-            'Try to select different category!',
+            'Try to select a different category!',
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge!
@@ -62,13 +62,13 @@ class MealScreen extends StatelessWidget {
           },
         ),
       );
-    } else if (title == null) {
-      return content;
     }
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(title!),
-        ),
-        body: content);
+      appBar: AppBar(
+        title: Text(title ?? 'Meals'),
+      ),
+      body: content,
+    );
   }
 }

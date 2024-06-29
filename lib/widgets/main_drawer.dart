@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key, required this.onselectScreen});
   final void Function(String identifier) onselectScreen;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -63,6 +64,23 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               onselectScreen('filters');
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.shopping_cart,
+              size: 26,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(
+              'Cart',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 24,
+                  ),
+            ),
+            onTap: () {
+              onselectScreen('cart');
             },
           ),
         ],
