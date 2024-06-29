@@ -3,7 +3,6 @@ import 'package:meal_app/models/meal.dart';
 import 'package:meal_app/screen/tabs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meal_app/provider/favorites_provider.dart';
 
 class MealDetailsScreen extends ConsumerStatefulWidget {
   const MealDetailsScreen({super.key, required this.meal});
@@ -51,7 +50,14 @@ class _MealDetailsScreen extends ConsumerState<MealDetailsScreen> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(wasAdded ? 'Meal Added ' : ' Meal removed')));
             },
-            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+                duration: const Duration(seconds: 1),
+                transitionBuilder: (child, animation) =>
+                    RotationTransition(turns: Tween<double>(begin:0.5 ,end:1.0 ).animate(animation), child: child),
+                child: Icon(
+                  isFavorite ? Icons.star : Icons.star_border,
+                  key: ValueKey(isFavorite),
+                )),
           ),
         ],
       ),
