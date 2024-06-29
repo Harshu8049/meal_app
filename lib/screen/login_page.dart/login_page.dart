@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_app/controller/controller.dart';
 import 'package:meal_app/hive/hive.dart';
-import 'package:meal_app/screen/forget_password.dart';
+
 import 'package:meal_app/screen/register_page.dart';
 import 'package:loading_btn/loading_btn.dart';
 import 'package:meal_app/screen/tabs.dart';
@@ -56,17 +56,10 @@ class _LogininScreenState extends State<LogininScreen>
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = context.height;
-    double screenWidth = context.width;
-
     return GetBuilder<LoginPageController>(builder: (_) {
       void passwordEye() {
         controller.loginobscureText = !controller.loginobscureText;
         controller.update();
-      }
-
-      void goToForgotPassword() {
-        Get.to(() => ForgotPasswordScreen());
       }
 
       return Stack(
